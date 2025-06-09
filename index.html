@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> 锋锋老师的词汇听写测试 (无限练习版)</title>
+    <title>TOEFL 词汇听写测试 (锋锋老师beta版)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for speaker icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -70,12 +72,27 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .play-button {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
+            padding: 0;
+            vertical-align: middle;
+            transition: color 0.2s;
+        }
+        .play-button:hover {
+            color: #2563eb;
+        }
     </style>
 </head>
 <body>
     <div class="main-container">
         <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
-            锋锋老师的词汇听写 (beta版)
+            TOEFL 词汇听写测试 (from锋锋老师)
         </h1>
 
         <div id="quiz-area" class="flex flex-col gap-6">
@@ -125,7 +142,7 @@
         const getExampleBtn = document.getElementById('get-example-btn');
         const checkAnswerBtn = document.getElementById('check-answer-btn');
         const nextWordBtn = document.getElementById('next-word-btn');
-        const endTestBtn = document.getElementById('end-test-btn'); // New End Test button
+        const endTestBtn = document.getElementById('end-test-btn');
         const feedbackMessage = document.getElementById('feedback-message');
         const exampleSentenceDisplay = document.getElementById('example-sentence-display');
         const finalResultsArea = document.getElementById('final-results-area');
@@ -141,6 +158,7 @@
 
         // LLM API Key (leave empty, Canvas provides it at runtime)
         const apiKey = "AIzaSyD7Tb_4ttDNI__kLiLgVyuZgCt-fcoQLCA";
+        let speechSynth = window.speechSynthesis; // Web Speech API for pronunciation
 
         /**
          * Shuffles an array randomly using the Fisher-Yates algorithm.
@@ -154,6 +172,38 @@
             }
             return array;
         }
+
+        /**
+         * Plays the pronunciation of a given word.
+         * @param {string} word - The word to pronounce.
+         */
+        function playPronunciation(word) {
+            if (speechSynth) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US'; // Set language for English pronunciation
+                speechSynth.speak(utterance);
+            } else {
+                console.warn('SpeechSynthesis API not supported in this browser.');
+            }
+        }
+
+        /**
+         * Creates and returns a play button element.
+         * @param {string} wordToSpeak - The word to be spoken when the button is clicked.
+         * @returns {HTMLButtonElement} The play button element.
+         */
+        function createPlayButton(wordToSpeak) {
+            const button = document.createElement('button');
+            button.classList.add('play-button');
+            button.innerHTML = '<i class="fas fa-volume-up"></i>'; // Font Awesome speaker icon
+            button.title = `播放 "${wordToSpeak}" 的发音`;
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering parent element's events
+                playPronunciation(wordToSpeak);
+            });
+            return button;
+        }
+
 
         /**
          * Loads vocabulary data from expressions.json.
@@ -172,7 +222,7 @@
                 }
                 initializeTest();
             } catch (error) {
-                questionDisplay.textContent = '加载词汇失败。请检查 expressions.json 是否存在且格式正确。';
+                questionDisplay.textContent = '加载词汇失败。请检查 expressions.json 是否存在且格式正确，或网络连接。';
                 console.error('Failed to load vocabulary:', error);
             }
         }
@@ -246,8 +296,10 @@
                 feedbackMessage.classList.add('text-green-600');
                 answerInput.classList.add('feedback-correct');
                 correctAnswersCount++;
+                playPronunciation(correctEnglish); // Play pronunciation on correct answer
             } else {
-                feedbackMessage.textContent = `错误！正确答案是: "${correctEnglish}" 👎`;
+                feedbackMessage.innerHTML = `错误！正确答案是: "${correctEnglish}"`;
+                feedbackMessage.appendChild(createPlayButton(correctEnglish)); // Add play button
                 feedbackMessage.classList.remove('text-green-600');
                 feedbackMessage.classList.add('text-red-600');
                 answerInput.classList.add('feedback-incorrect');
@@ -304,12 +356,17 @@
 
                 incorrectAnswers.forEach(item => {
                     const li = document.createElement('li');
-                    li.classList.add('mb-2', 'pb-2', 'border-b', 'border-gray-200');
+                    li.classList.add('mb-2', 'pb-2', 'border-b', 'border-gray-200', 'flex', 'flex-col');
                     li.innerHTML = `
                         <p><strong>中文:</strong> ${item.chinese}</p>
-                        <p><strong>您输入:</strong> <span class="text-red-600">${item.typed || '[未输入]'}</span></p>
-                        <p><strong>正确答案:</strong> <span class="text-green-600">${item.correct}</span></p>
+                        <p class="flex items-center"><strong>您输入:</strong> <span class="text-red-600">${item.typed || '[未输入]'}</span></p>
+                        <p class="flex items-center"><strong>正确答案:</strong> <span class="text-green-600">${item.correct}</span></p>
                     `;
+                    // Add play button next to the correct answer in the results list
+                    const correctSpan = li.querySelector('.text-green-600');
+                    if (correctSpan) {
+                        correctSpan.parentNode.appendChild(createPlayButton(item.correct));
+                    }
                     resultsList.appendChild(li);
                 });
             }
@@ -317,16 +374,32 @@
 
         /**
          * Generates an example sentence using the Gemini API (gemini-2.0-flash).
+         * Optimized to require correct input/checked answer first.
          */
         async function getExampleSentence() {
             const currentPair = shuffledVocabulary[currentWordIndex];
-            const englishWord = currentPair.english;
+            const englishWord = currentPair.english; // Always use the correct word for example sentence
+
+            // --- 新增的逻辑：例句获取条件优化 ---
+            // 如果输入框为空，或者答案已经检查过但错误，则提示用户
+            const isAnswerEmpty = answerInput.value.trim() === '';
+            const isAnswerChecked = answerInput.readOnly;
+            const isAnswerCorrect = answerInput.classList.contains('feedback-correct');
+
+            if (isAnswerEmpty && !isAnswerChecked) { // 如果没输入且还没检查
+                exampleSentenceDisplay.textContent = '请输入英文词汇或短语后再获取例句。';
+                return;
+            } else if (isAnswerChecked && !isAnswerCorrect) { // 如果已经检查且答案错误
+                 exampleSentenceDisplay.textContent = '请检查您的答案（红色部分），并查看正确答案，再获取例句。';
+                 return;
+            }
+            // --- 结束新增逻辑 ---
 
             exampleSentenceDisplay.innerHTML = '<div class="loading-spinner"></div>'; // Show loading spinner
             getExampleBtn.disabled = true; // Disable button during loading
 
             try {
-                const prompt = `Please provide an example sentence in English using the word/phrase "${englishWord}". The sentence should be appropriate for an intermediate English learner.`;
+                const prompt = `请提供一个关于英文词汇或短语 "${englishWord}" 的例句。例句需适合中级英语学习者，且句子内容避免过于简单或过于复杂。`;
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
