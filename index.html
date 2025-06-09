@@ -3,61 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL 词汇听写测试 (锋锋老师)</title>
+    <title>TOEFL 词汇测试 - 锋锋老师</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for speaker icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Custom styles for background and font */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light blue-gray background */
+            background-color: #eef2f6; /* Light blue-gray background */
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 1rem;
+            padding: 1.5rem; /* Increase overall padding */
             overflow-y: auto;
         }
 
         .main-container {
+            /* Styles from user's selected code, adapted for current structure */
             background-color: #ffffff;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            border-radius: 1rem; /* Smaller border-radius from selected code */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Shadow from selected code */
+            padding: 2rem; /* Padding from selected code */
             width: 100%;
-            max-width: 700px;
+            max-width: 700px; /* Max width from selected code */
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.5rem; /* Gap from selected code */
             text-align: center;
+            position: relative; /* For absolute positioning of back button */
+            pointer-events: auto !important; /* Ensure click events are passed */
+            z-index: 1; /* Ensure it's above default layer and receives events */
         }
 
-        .input-field {
-            border: 2px solid #cbd5e1;
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
-            font-size: 1.125rem;
+        /* Styles for all views */
+        .view {
             width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem; /* Spacing between elements inside a view */
+            position: relative; /* Ensure z-index works */
+            z-index: 2; /* Ensure view is above main-container */
+            pointer-events: auto; /* Ensure this element and its children are interactive */
         }
 
+        /* Title styles - adapted for mobile single line */
+        .view-title {
+            font-size: 2.25rem; /* text-3xl */
+            line-height: 2.5rem; /* leading-9 */
+            font-weight: 800; /* font-extrabold */
+            color: #1f2937; /* text-gray-800 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            /* Added for single line on mobile */
+            white-space: nowrap; /* Prevent text wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Add ellipsis for overflow */
+        }
+        /* Responsive adjustments for title (from previous full version) */
+        @media (max-width: 767px) { /* Adjust for mobile specifically */
+            .view-title {
+                font-size: 1.75rem; /* Smaller text on mobile */
+                line-height: 1.2; /* Tighter line height */
+            }
+        }
+        @media (min-width: 768px) {
+            .view-title {
+                font-size: 2.5rem; /* md:text-4xl */
+                line-height: 1; /* md:leading-10 */
+                white-space: normal; /* Allow wrapping on larger screens */
+            }
+        }
+
+        /* Primary button styles */
+        .btn-primary {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: #ffffff; /* text-white */
+            font-weight: 700; /* font-bold */
+            padding: 0.75rem 2rem; /* py-3 px-8 */
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            transition-property: all;
+            transition-duration: 300ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* transition-all */
+            transform: scale(1); /* hover:scale-105 base */
+            width: 66.666667%; /* w-2/3 */
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.05em; /* Increase letter spacing */
+            pointer-events: auto; /* Explicitly set to interactive */
+            z-index: 3; /* Ensure button layer is above its container */
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8; /* hover:bg-blue-700 */
+            transform: scale(1.05); /* hover:scale-105 */
+        }
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5); /* focus:ring-4 focus:ring-blue-300 */
+        }
+        @media (min-width: 768px) {
+            .btn-primary {
+                width: 50%; /* md:w-1/2 */
+            }
+        }
+
+        /* Secondary button/selection item styles (card-like) - NOT USED IN THIS SIMPLER VERSION, BUT KEPT FOR REFERENCE IF LAYOUT CHANGES */
+        .btn-selection-item {
+            background-color: #ffffff; /* bg-white */
+            border: 1px solid #e5e7eb; /* border border-gray-200 */
+            color: #1f2937; /* text-gray-800 */
+            font-weight: 600; /* font-semibold */
+            padding: 1rem 1.5rem; /* py-4 px-6 */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s; /* Combined transitions */
+            text-align: center;
+            min-height: 80px; /* Ensure sufficient height */
+            display: flex; /* Use flexbox for vertical centering */
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto; /* Explicitly set to interactive */
+            z-index: 3; /* Ensure button layer is above its container */
+        }
+        .btn-selection-item:hover {
+            background-color: #f9fafb; /* hover:bg-gray-50 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* hover:shadow-lg */
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+        .btn-selection-item:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5); /* focus:ring-2 focus:ring-blue-400 */
+        }
+
+        .btn-selection-item-selected {
+            background-color: #3b82f6; /* bg-blue-500 */
+            color: #ffffff; /* text-white */
+            border-color: #3b82f6; /* border-blue-500 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* ring-2 ring-blue-300 */
+        }
+        .btn-selection-item-selected:hover {
+             background-color: #2563eb; /* bg-blue-600 */
+        }
+
+        /* Back button styles - Adjusted for mobile from previous full version*/
+        .btn-back {
+            background-color: #e5e7eb; /* bg-gray-200 */
+            color: #374151; /* text-gray-700 */
+            font-weight: 700; /* font-bold */
+            padding: 0.5rem 1rem; /* py-2 px-4 */
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); /* Combined transition */
+            transform: scale(1); /* hover:scale-105 base */
+            position: absolute;
+            top: 1rem; /* Adjusted to give more space from top */
+            left: 1rem; /* Adjusted to give more space from left */
+            z-index: 10;
+            pointer-events: auto; /* Explicitly set to interactive */
+        }
+        .btn-back:hover {
+            background-color: #d1d5db; /* hover:bg-gray-300 */
+            transform: scale(1.05); /* hover:scale-105 */
+        }
+        .btn-back:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(209, 213, 219, 0.5); /* focus:ring-4 focus:ring-gray-200 */
+        }
+        @media (max-width: 767px) { /* Mobile specific adjustment for back button */
+            .btn-back {
+                top: 0.75rem; /* Even smaller top padding on very small screens */
+                left: 0.75rem; /* Even smaller left padding */
+                padding: 0.4rem 0.8rem; /* Slightly smaller padding */
+                font-size: 0.8rem; /* Smaller font size for the button text */
+            }
+        }
+
+        /* Hidden utility class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Different selection grid layouts (retained for completeness but not used in this version) */
+        .grid-layout {
+            display: grid;
+            gap: 1rem; /* gap-4 */
+            width: 100%; /* w-full */
+            pointer-events: auto; /* Ensure grid container is interactive */
+            z-index: 2; /* Ensure grid container is above view */
+        }
+        .grid-col-1-md-2 {
+            grid-template-columns: repeat(1, minmax(0, 1fr)); /* grid-cols-1 */
+        }
+        @media (min-width: 768px) {
+            .grid-col-1-md-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
+            }
+        }
+
+        .grid-col-2-md-3 {
+            grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
+        }
+        @media (min-width: 768px) {
+            .grid-col-2-md-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr)); /* md:grid-cols-3 */
+            }
+        }
+
+        .grid-col-3-md-5 {
+            grid-template-columns: repeat(3, minmax(0, 1fr)); /* grid-cols-3 */
+        }
+        @media (min-width: 768px) {
+            .grid-col-3-md-5 {
+                grid-template-columns: repeat(5, minmax(0, 1fr)); /* md:grid-cols-5 */
+            }
+        }
+
+        /* Input field generic styles */
+        .input-field {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem; /* px-4 py-3 */
+            border: 1px solid #d1d5db; /* border border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            font-size: 1.125rem; /* text-lg */
+            color: #1f2937; /* text-gray-800 */
+            background-color: #ffffff; /* bg-white */
+            transition-property: all;
+            transition-duration: 200ms;
+        }
+        .input-field::placeholder {
+            color: #9ca3af; /* placeholder-gray-400 */
+        }
         .input-field:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+            border-color: #3b82f6; /* focus:border-blue-500 */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 */
+        }
+
+
+        /* Dictation test specific styles */
+        .quiz-question-display {
+            background-color: #dbeafe; /* bg-blue-100 */
+            color: #1e40af; /* text-blue-900 */
+            font-size: 3rem; /* text-4xl */
+            line-height: 1.3; /* Adjusted line-height */
+            font-weight: 800; /* font-extrabold */
+            padding: 2rem 1.5rem; /* py-8 px-6 */
+            border-radius: 1rem; /* rounded-2xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            min-height: 120px; /* Ensure sufficient height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (min-width: 768px) {
+            .quiz-question-display {
+                font-size: 3.75rem; /* md:text-5xl */
+            }
+        }
+
+        .quiz-input-field {
+            border: 2px solid #d1d5db; /* border-2 border-gray-300 */
+            background-color: #ffffff; /* bg-white */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1rem; /* p-4 */
+            font-size: 1.25rem; /* text-xl */
+            color: #1f2937; /* text-gray-800 */
+            width: 100%; /* w-full */
+            text-align: center;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); /* shadow-inner */
+            transition-property: all;
+            transition-duration: 200ms;
+        }
+        .quiz-input-field:focus {
+            border-color: #3b82f6; /* focus:border-blue-500 */
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5); /* focus:ring-2 focus:ring-blue-200 */
         }
 
         .feedback-correct {
-            background-color: #d1fae5; /* Light green */
-            border-color: #10b981;
+            background-color: #d1fae5; /* bg-green-100 */
+            border-color: #22c55e; /* border-green-500 */
+            color: #166534; /* text-green-800 */
         }
-
         .feedback-incorrect {
-            background-color: #fee2e2; /* Light red */
-            border-color: #ef4444;
+            background-color: #fee2e2; /* bg-red-100 */
+            border-color: #ef4444; /* border-red-500 */
+            color: #991b1b; /* text-red-800 */
         }
-
         .loading-spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3b82f6;
@@ -67,12 +305,10 @@
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .play-button {
             background: none;
             border: none;
@@ -90,17 +326,27 @@
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
-            TOEFL 词汇听写测试 (from锋锋老师)
-        </h1>
+    <div id="app-container" class="main-container">
+        <!-- Main title which will be the first view's title -->
+        <h1 id="global-main-title" class="view-title">TOEFL 词汇听写测试 (from锋锋老师)</h1>
 
-        <div id="quiz-area" class="flex flex-col gap-6">
-            <div id="question-display" class="bg-blue-100 text-blue-900 text-3xl font-bold py-6 px-4 rounded-lg shadow-inner">
+        <!-- Info View (Starting screen for name input) -->
+        <div id="info-view" class="view">
+            <p class="text-xl text-gray-700 mb-8">请填写您的信息以开始测试：</p>
+            <input type="text" id="student-name-input" class="input-field mb-4" placeholder="请输入您的姓名" />
+            <!-- Class input removed as per single file customization, but left here if needed in future for class student -->
+            <!-- <input type="text" id="student-class-input" class="input-field mb-6 hidden" placeholder="请输入您的班级 (班课学生)" /> -->
+            <button id="start-test-btn" class="btn-primary">开始测试</button>
+        </div>
+
+        <!-- Dictation Test View -->
+        <div id="test-view" class="view hidden">
+            <!-- No separate title element here as global-main-title is used -->
+            <div id="question-display" class="quiz-question-display">
                 加载词汇...
             </div>
 
-            <input type="text" id="answer-input" class="input-field" placeholder="在此输入英文词汇或短语..." autofocus>
+            <input type="text" id="answer-input" class="quiz-input-field" placeholder="在此输入英文词汇或短语..." autofocus>
 
             <div id="example-sentence-display" class="bg-gray-50 p-4 rounded-lg shadow-inner text-gray-700 text-sm italic min-h-[60px] flex items-center justify-center">
                 点击 "获取例句" 查看上下文
@@ -125,18 +371,40 @@
             </div>
 
             <div id="feedback-message" class="text-lg font-semibold min-h-[30px]"></div>
+        </div>
 
-            <div id="final-results-area" class="hidden flex flex-col gap-4 mt-6">
-                <h2 class="text-2xl font-bold text-gray-800">本次练习结果</h2>
-                <div id="results-list" class="text-left bg-gray-50 p-4 rounded-lg shadow-inner"></div>
-                <button id="restart-test-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300">
-                    重新开始练习
-                </button>
+        <!-- Test Results View -->
+        <div id="results-view" class="view hidden">
+            <h2 class="view-title">
+                测试结果
+            </h2>
+            <div id="test-summary" class="text-left text-lg text-gray-800 mb-6">
+                <p><strong>姓名:</strong> <span id="summary-name"></span></p>
+                <!-- Class row hidden for this single-file version -->
+                <!-- <p id="summary-class-row"><strong>班级:</strong> <span id="summary-class"></span></p> -->
+                <p><strong>日期:</strong> <span id="summary-date"></span></p>
+                <p><strong>正确率:</strong> <span id="summary-accuracy" class="font-bold"></span></p>
             </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">
+                答错题目列表 (<span id="incorrect-count">0</span> 题)
+            </h3>
+            <div id="results-list" class="text-left bg-gray-50 p-4 rounded-lg shadow-inner w-full max-h-96 overflow-y-auto"></div>
+            <button id="results-restart-btn" class="btn-primary mt-8">重新开始练习</button>
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // --- DOM element references ---
+        const appContainer = document.getElementById('app-container');
+        const globalMainTitle = document.getElementById('global-main-title'); // Global main title
+        const infoView = document.getElementById('info-view');
+        const testView = document.getElementById('test-view');
+        const resultsView = document.getElementById('results-view');
+
+        const studentNameInput = document.getElementById('student-name-input');
+        const startTestBtn = document.getElementById('start-test-btn');
+
+        // Test View specific elements
         const questionDisplay = document.getElementById('question-display');
         const answerInput = document.getElementById('answer-input');
         const getExampleBtn = document.getElementById('get-example-btn');
@@ -145,65 +413,315 @@
         const endTestBtn = document.getElementById('end-test-btn');
         const feedbackMessage = document.getElementById('feedback-message');
         const exampleSentenceDisplay = document.getElementById('example-sentence-display');
-        const finalResultsArea = document.getElementById('final-results-area');
+
+        // Results View specific elements
+        const summaryName = document.getElementById('summary-name');
+        const summaryDate = document.getElementById('summary-date');
+        const summaryAccuracy = document.getElementById('summary-accuracy');
+        const incorrectCountSpan = document.getElementById('incorrect-count');
         const resultsList = document.getElementById('results-list');
-        const restartTestBtn = document.getElementById('restart-test-btn');
+        const resultsRestartBtn = document.getElementById('results-restart-btn');
 
-        let vocabularyData = []; // This will be populated by fetching expressions.json
-        let shuffledVocabulary = []; // Shuffled list for the current test
-        let currentWordIndex = 0; // Tracks position in shuffledVocabulary
-        let correctAnswersCount = 0;
-        let questionsAttempted = 0; // Tracks total questions answered in the current session
-        let incorrectAnswers = []; // To store details of incorrect answers for final review
 
-        // LLM API Key (leave empty, Canvas provides it at runtime)
-        const apiKey = "AIzaSyD7Tb_4ttDNI__kLiLgVyuZgCt-fcoQLCA";
-        let speechSynth = window.speechSynthesis; // Web Speech API for pronunciation
-        let voicesLoaded = false; // Flag to track if voices are loaded
+        // --- Global Application State ---
+        const appState = {
+            currentView: 'info-view', // Start directly at info-view for this simplified version
+            studentName: '',
+            currentTestVocabulary: [], // Stores the vocabulary data for the current test
+            shuffledTestVocabulary: [], // Shuffled list of words for the current test session
+            currentWordIndex: 0,
+            correctAnswersCount: 0,
+            questionsAttempted: 0,
+            incorrectAnswers: [], // Stores details of incorrectly answered questions
+        };
+
+        // LLM API Key (leave empty, Canvas runtime will automatically populate)
+        const geminiApiKey = ""; // This will be automatically populated by Canvas runtime
+
+        let speechSynth = window.speechSynthesis;
+        let voicesLoaded = false;
+
+
+        // --- Core View Management Functions ---
+        /**
+         * Switches to the specified view.
+         * @param {string} viewId - The ID of the view to display.
+         */
+        function showView(viewId) {
+            console.log(`[showView] Attempting to show view: ${viewId}`);
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.add('hidden');
+            });
+
+            // Show the target view
+            document.getElementById(viewId).classList.remove('hidden');
+            appState.currentView = viewId;
+
+            // Render content based on the view
+            renderViewContent(viewId);
+            console.log(`[showView] Finished showing view: ${viewId}`);
+        }
 
         /**
-         * Shuffles an array randomly using the Fisher-Yates algorithm.
-         * @param {Array} array - The array to shuffle.
-         * @returns {Array} The shuffled array.
+         * Renders the content of a specific view.
+         * @param {string} viewId - The ID of the current view.
          */
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        function renderViewContent(viewId) {
+            console.log(`[renderViewContent] Rendering content for view: ${viewId}`);
+            switch (viewId) {
+                case 'info-view':
+                    studentNameInput.value = appState.studentName; // Retain name if returning
+                    studentNameInput.focus();
+                    console.log('[renderViewContent] Info view: Ready for student info.');
+                    break;
+                case 'test-view':
+                    console.log('[renderViewContent] Test view: Initializing test logic.');
+                    initializeTestLogic();
+                    break;
+                case 'results-view':
+                    console.log('[renderViewContent] Results view: Rendering final results.');
+                    renderFinalResults();
+                    break;
             }
-            return array;
         }
+
+        /**
+         * Resets all test-related state data.
+         */
+        function resetTestState() {
+            console.log('[resetTestState] Resetting all test-related state.');
+            appState.currentTestVocabulary = [];
+            appState.shuffledTestVocabulary = [];
+            appState.currentWordIndex = 0;
+            appState.correctAnswersCount = 0;
+            appState.questionsAttempted = 0;
+            appState.incorrectAnswers = [];
+        }
+
+        // --- Dictation Test Core Logic ---
+        /**
+         * Initializes the test: loads vocabulary, shuffles it, and resets counters.
+         */
+        async function initializeTestLogic() {
+            console.log('[initializeTestLogic] Initializing test logic...');
+            questionDisplay.textContent = '加载词汇中...';
+            // Hide all test controls during loading
+            answerInput.classList.add('hidden');
+            getExampleBtn.classList.add('hidden');
+            checkAnswerBtn.classList.add('hidden');
+            nextWordBtn.classList.add('hidden');
+            endTestBtn.classList.add('hidden');
+            feedbackMessage.classList.add('hidden');
+            exampleSentenceDisplay.classList.add('hidden');
+
+            try {
+                const response = await fetch('expressions.json'); // Always load expressions.json for this version
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} from expressions.json`);
+                }
+                appState.currentTestVocabulary = await response.json();
+
+                if (!appState.currentTestVocabulary || appState.currentTestVocabulary.length === 0) {
+                    console.warn('[initializeTestLogic] Loaded vocabulary is empty.');
+                    showModal('词汇列表为空。请在 expressions.json 中添加词汇。');
+                    showView('info-view'); // Go back to info view if vocab is empty
+                    return;
+                }
+
+                appState.shuffledTestVocabulary = shuffleArray([...appState.currentTestVocabulary]);
+                appState.currentWordIndex = 0;
+                appState.correctAnswersCount = 0;
+                appState.questionsAttempted = 0;
+                appState.incorrectAnswers = [];
+
+                // Ensure test view UI elements are correctly visible at the start of a new test
+                answerInput.classList.remove('hidden');
+                getExampleBtn.classList.remove('hidden');
+                checkAnswerBtn.classList.remove('hidden');
+                endTestBtn.classList.remove('hidden'); // Ensure end test button is always visible during test
+                feedbackMessage.classList.remove('hidden');
+                exampleSentenceDisplay.classList.remove('hidden');
+
+                loadQuestion();
+                console.log('[initializeTestLogic] Test initialized and first question loaded.');
+
+            } catch (error) {
+                console.error('[initializeTestLogic] Vocabulary loading error:', error);
+                showModal(`加载词库失败: ${error.message}。请检查 expressions.json 是否存在且格式正确，或网络连接。`);
+                showView('info-view'); // Go back to info view on error
+            }
+        }
+
+        /**
+         * Loads the current Chinese word/phrase for dictation.
+         * Handles test completion if all words are done.
+         */
+        function loadQuestion() {
+            console.log(`[loadQuestion] Loading question ${appState.currentWordIndex + 1} / ${appState.shuffledTestVocabulary.length}...`);
+
+            // Check if all unique words in the shuffled list have been presented
+            if (appState.currentWordIndex >= appState.shuffledTestVocabulary.length) {
+                // All words completed for this shuffled session
+                questionDisplay.textContent = '已完成全部词汇测验！';
+                answerInput.value = ''; // Clear input
+                answerInput.classList.add('hidden'); // Hide input
+                answerInput.readOnly = true; // Make sure it's read-only
+                feedbackMessage.textContent = '请点击 "结束测试" 查看结果。';
+                feedbackMessage.classList.remove('text-green-600', 'text-red-600');
+                exampleSentenceDisplay.textContent = ''; // Clear example
+                exampleSentenceDisplay.classList.add('hidden'); // Hide example display
+                getExampleBtn.classList.add('hidden'); // Hide example button
+                checkAnswerBtn.classList.add('hidden'); // Hide check button
+                nextWordBtn.classList.add('hidden'); // Hide next button
+
+                console.log('[loadQuestion] All vocabulary completed. Prompting user to end test.');
+                return; // Stop loading new questions
+            }
+
+            // Normal loading of a question
+            const currentPair = appState.shuffledTestVocabulary[appState.currentWordIndex];
+            questionDisplay.textContent = currentPair.chinese;
+            answerInput.value = '';
+            // Ensure input is visible and active for new question
+            answerInput.classList.remove('feedback-correct', 'feedback-incorrect', 'hidden');
+            answerInput.readOnly = false;
+            answerInput.focus();
+            feedbackMessage.textContent = '';
+            feedbackMessage.classList.remove('text-green-600', 'text-red-600');
+            nextWordBtn.classList.add('hidden'); // Hide next button until answered
+            checkAnswerBtn.classList.remove('hidden'); // Show check button
+            getExampleBtn.classList.remove('hidden'); // Ensure get example button is visible
+            exampleSentenceDisplay.textContent = '点击 "获取例句" 查看上下文'; // Reset example sentence
+            exampleSentenceDisplay.classList.remove('hidden'); // Ensure example display is visible
+            getExampleBtn.disabled = false;
+            console.log(`[loadQuestion] Displaying Chinese: "${currentPair.chinese}"`);
+        }
+
+        /**
+         * Checks the student's typed answer against the correct English expression.
+         */
+        function checkCurrentAnswer() {
+            console.log('[checkCurrentAnswer] Checking answer...');
+            appState.questionsAttempted++;
+            const typedAnswer = answerInput.value.trim();
+            const correctEnglish = appState.shuffledTestVocabulary[appState.currentWordIndex].english.trim();
+
+            answerInput.readOnly = true;
+            getExampleBtn.disabled = true;
+
+            if (typedAnswer.toLowerCase() === correctEnglish.toLowerCase()) {
+                feedbackMessage.textContent = '正确！👍';
+                feedbackMessage.classList.remove('text-red-600');
+                feedbackMessage.classList.add('text-green-600');
+                answerInput.classList.add('feedback-correct');
+                appState.correctAnswersCount++;
+                playPronunciation(correctEnglish);
+                console.log('[checkCurrentAnswer] Answer correct.');
+            } else {
+                feedbackMessage.innerHTML = `错误！正确答案是: "${correctEnglish}"`;
+                feedbackMessage.appendChild(createPlayButton(correctEnglish));
+                feedbackMessage.classList.remove('text-green-600');
+                feedbackMessage.classList.add('text-red-600');
+                answerInput.classList.add('feedback-incorrect');
+                appState.incorrectAnswers.push({
+                    chinese: appState.shuffledTestVocabulary[appState.currentWordIndex].chinese,
+                    typed: typedAnswer,
+                    correct: correctEnglish
+                });
+                console.log(`[checkCurrentAnswer] Answer incorrect. Correct: "${correctEnglish}", Typed: "${typedAnswer}"`);
+            }
+
+            checkAnswerBtn.classList.add('hidden'); // Hide check button
+            // Only show next word button if not all words are completed
+            if (appState.currentWordIndex < appState.shuffledTestVocabulary.length) {
+                nextWordBtn.classList.remove('hidden');
+            }
+            console.log('[checkCurrentAnswer] Answer checked. Ready for next word or end test.');
+        }
+
+        /**
+         * Transitions to the next word in the sequence.
+         */
+        function nextWord() {
+            console.log('[nextWord] Moving to next word...');
+            appState.currentWordIndex++;
+            loadQuestion();
+        }
+
+        /**
+         * Ends the current test session and navigates to the results view.
+         */
+        function endTestSession() {
+            console.log('[endTestSession] Ending test session.');
+            showView('results-view');
+        }
+
+        /**
+         * Renders the final results on the results view.
+         */
+        function renderFinalResults() {
+            console.log('[renderFinalResults] Rendering final results...');
+            // Populate results summary
+            summaryName.textContent = appState.studentName || '未填写';
+            summaryDate.textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            let accuracy = 0;
+            if (appState.questionsAttempted > 0) {
+                accuracy = (appState.correctAnswersCount / appState.questionsAttempted) * 100;
+            }
+            summaryAccuracy.textContent = `${accuracy.toFixed(2)}% (${appState.correctAnswersCount} / ${appState.questionsAttempted})`;
+            
+            incorrectCountSpan.textContent = appState.incorrectAnswers.length;
+
+            // Populate list of incorrect answers
+            resultsList.innerHTML = '';
+            if (appState.incorrectAnswers.length === 0) {
+                resultsList.innerHTML = '<p class="text-green-700 font-semibold">太棒了！所有题目都正确！</p>';
+                console.log('[renderFinalResults] All answers correct!');
+            } else {
+                appState.incorrectAnswers.forEach(item => {
+                    const li = document.createElement('li');
+                    li.classList.add('mb-2', 'pb-2', 'border-b', 'border-gray-200', 'flex', 'flex-col');
+                    li.innerHTML = `
+                        <p><strong>中文:</strong> ${item.chinese}</p>
+                        <p class="flex items-center"><strong>您输入:</strong> <span class="text-red-600">${item.typed || '[未输入]'}</span></p>
+                        <p class="flex items-center"><strong>正确答案:</strong> <span class="text-green-600">${item.correct}</span></p>
+                    `;
+                    const correctSpan = li.querySelector('.text-green-600');
+                    if (correctSpan) {
+                        correctSpan.parentNode.appendChild(createPlayButton(item.correct));
+                    }
+                    resultsList.appendChild(li);
+                });
+                console.log(`[renderFinalResults] Displaying ${appState.incorrectAnswers.length} incorrect answers.`);
+            }
+            console.log('[renderFinalResults] Results rendering complete.');
+        }
+
+        // --- Speech Synthesis and LLM Example Sentence Functions ---
 
         /**
          * Plays the pronunciation of a given word.
          * @param {string} word - The word to pronounce.
          */
         function playPronunciation(word) {
-            // Check if SpeechSynthesis API is supported and if voices are loaded
+            console.log(`[playPronunciation] Attempting to play: "${word}"`);
             if (!speechSynth || !voicesLoaded) {
-                console.warn('SpeechSynthesis API not ready or supported in this browser.');
-                // feedbackMessage.textContent = '抱歉，当前设备不支持语音播放。'; // 可以选择给用户提示
+                console.warn('SpeechSynthesis API not ready or supported in this browser. Pronunciation will not work.');
                 return;
             }
-
-            // If already speaking, cancel the current utterance before speaking a new one
             if (speechSynth.speaking) {
                 speechSynth.cancel();
+                console.log('[playPronunciation] Cancelling previous speech.');
             }
-
             const utterance = new SpeechSynthesisUtterance(word);
-            utterance.lang = 'en-US'; // Set language for English pronunciation
-            utterance.volume = 1;     // Volume (0 to 1)
-            utterance.rate = 1;       // Rate (0.1 to 10)
-            utterance.pitch = 1;      // Pitch (0 to 2)
-
-            // Optional: Choose a specific voice if you have a preference after voices are loaded
-            // let selectedVoice = speechSynth.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('Google US English'));
-            // if (selectedVoice) {
-            //     utterance.voice = selectedVoice;
-            // }
-
+            utterance.lang = 'en-US';
+            utterance.volume = 1;
+            utterance.rate = 1;
+            utterance.pitch = 1;
             speechSynth.speak(utterance);
+            console.log(`[playPronunciation] Spoke: "${word}"`);
         }
 
         /**
@@ -214,208 +732,40 @@
         function createPlayButton(wordToSpeak) {
             const button = document.createElement('button');
             button.classList.add('play-button');
-            button.innerHTML = '<i class="fas fa-volume-up"></i>'; // Font Awesome speaker icon
+            button.innerHTML = '<i class="fas fa-volume-up"></i>';
             button.title = `播放 "${wordToSpeak}" 的发音`;
             button.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering parent element's events (e.g., if inside a larger clickable area)
+                e.stopPropagation();
                 playPronunciation(wordToSpeak);
             });
             return button;
         }
 
-
-        /**
-         * Loads vocabulary data from expressions.json.
-         */
-        async function loadVocabulary() {
-            questionDisplay.textContent = '加载词汇中...';
-            try {
-                const response = await fetch('expressions.json'); // Fetch the external JSON file
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                vocabularyData = await response.json();
-                if (vocabularyData.length === 0) {
-                    questionDisplay.textContent = '词汇列表为空。请在 expressions.json 中添加词汇。';
-                    return;
-                }
-                initializeTest();
-            } catch (error) {
-                questionDisplay.textContent = '加载词汇失败。请检查 expressions.json 是否存在且格式正确，或网络连接。';
-                console.error('Failed to load vocabulary:', error);
-            }
-        }
-
-        /**
-         * Initializes or resets the dictation test for endless practice.
-         */
-        function initializeTest() {
-            shuffledVocabulary = shuffleArray([...vocabularyData]); // Shuffle for a fresh test session
-            currentWordIndex = 0;
-            correctAnswersCount = 0;
-            questionsAttempted = 0;
-            incorrectAnswers = [];
-
-            // Reset UI elements
-            finalResultsArea.classList.add('hidden');
-            restartTestBtn.classList.add('hidden');
-            endTestBtn.classList.remove('hidden'); // Show End Test button
-            answerInput.classList.remove('feedback-correct', 'feedback-incorrect');
-            answerInput.readOnly = false;
-            answerInput.value = '';
-            feedbackMessage.textContent = '';
-            feedbackMessage.classList.remove('text-green-600', 'text-red-600');
-            exampleSentenceDisplay.textContent = '点击 "获取例句" 查看上下文';
-            getExampleBtn.disabled = false;
-            checkAnswerBtn.classList.remove('hidden');
-            nextWordBtn.classList.add('hidden'); // Hide next button initially
-
-            loadQuestion();
-        }
-
-        /**
-         * Loads the current Chinese word/phrase for dictation.
-         * Loops back to the start of shuffled list for endless practice.
-         */
-        function loadQuestion() {
-            // Loop back to the beginning if all words in the shuffled list have been shown
-            if (currentWordIndex >= shuffledVocabulary.length) {
-                shuffledVocabulary = shuffleArray([...vocabularyData]); // Re-shuffle for new cycle
-                currentWordIndex = 0;
-            }
-
-            const currentPair = shuffledVocabulary[currentWordIndex];
-            questionDisplay.textContent = currentPair.chinese;
-            answerInput.value = ''; // Clear previous input
-            answerInput.classList.remove('feedback-correct', 'feedback-incorrect');
-            answerInput.readOnly = false; // Make input editable
-            answerInput.focus(); // Focus input for quick typing
-            feedbackMessage.textContent = '';
-            feedbackMessage.classList.remove('text-green-600', 'text-red-600');
-            nextWordBtn.classList.add('hidden'); // Hide next button
-            checkAnswerBtn.classList.remove('hidden'); // Show check button
-            exampleSentenceDisplay.textContent = '点击 "获取例句" 查看上下文'; // Reset example sentence display
-            getExampleBtn.disabled = false; // Re-enable get example button
-        }
-
-        /**
-         * Checks the student's typed answer against the correct English expression.
-         */
-        function checkCurrentAnswer() {
-            questionsAttempted++; // Increment attempted count for current session
-            const typedAnswer = answerInput.value.trim();
-            const correctEnglish = shuffledVocabulary[currentWordIndex].english.trim();
-
-            answerInput.readOnly = true; // Prevent further edits after checking
-            getExampleBtn.disabled = true; // Disable example sentence after checking
-
-            if (typedAnswer.toLowerCase() === correctEnglish.toLowerCase()) {
-                feedbackMessage.textContent = '正确！👍';
-                feedbackMessage.classList.remove('text-red-600');
-                feedbackMessage.classList.add('text-green-600');
-                answerInput.classList.add('feedback-correct');
-                correctAnswersCount++;
-                playPronunciation(correctEnglish); // Play pronunciation on correct answer
-            } else {
-                feedbackMessage.innerHTML = `错误！正确答案是: "${correctEnglish}"`;
-                feedbackMessage.appendChild(createPlayButton(correctEnglish)); // Add play button
-                feedbackMessage.classList.remove('text-green-600');
-                feedbackMessage.classList.add('text-red-600');
-                answerInput.classList.add('feedback-incorrect');
-                incorrectAnswers.push({
-                    chinese: shuffledVocabulary[currentWordIndex].chinese,
-                    typed: typedAnswer,
-                    correct: correctEnglish
-                });
-            }
-
-            checkAnswerBtn.classList.add('hidden'); // Hide check button
-            nextWordBtn.classList.remove('hidden'); // Show next button
-        }
-
-        /**
-         * Transitions to the next word in the sequence.
-         */
-        function nextWord() {
-            currentWordIndex++;
-            loadQuestion();
-        }
-
-        /**
-         * Ends the current practice session and shows the results.
-         */
-        function endTest() {
-            questionDisplay.textContent = `练习结束！`;
-            answerInput.classList.add('hidden'); // Hide input
-            getExampleBtn.classList.add('hidden');
-            checkAnswerBtn.classList.add('hidden');
-            nextWordBtn.classList.add('hidden');
-            endTestBtn.classList.add('hidden'); // Hide End Test button
-            feedbackMessage.textContent = '';
-            exampleSentenceDisplay.classList.add('hidden');
-
-            finalResultsArea.classList.remove('hidden');
-            restartTestBtn.classList.remove('hidden');
-
-            resultsList.innerHTML = '';
-            if (questionsAttempted === 0) {
-                resultsList.innerHTML = '<p class="text-gray-700">您还没有开始练习哦！</p>';
-            } else if (incorrectAnswers.length === 0 && correctAnswersCount === questionsAttempted) {
-                resultsList.innerHTML = `<p class="text-green-700">太棒了！本次练习您答对了 ${correctAnswersCount} / ${questionsAttempted} 题，所有题目都正确！</p>`;
-            } else {
-                const summary = document.createElement('p');
-                summary.classList.add('font-bold', 'mb-4', 'text-gray-800');
-                summary.textContent = `本次练习您答对了 ${correctAnswersCount} / ${questionsAttempted} 题。`;
-                resultsList.appendChild(summary);
-
-                const incorrectHeader = document.createElement('p');
-                incorrectHeader.classList.add('font-bold', 'mb-2', 'text-red-700');
-                incorrectHeader.textContent = `以下是您答错的题目 (${incorrectAnswers.length} 题):`;
-                resultsList.appendChild(incorrectHeader);
-
-                incorrectAnswers.forEach(item => {
-                    const li = document.createElement('li');
-                    li.classList.add('mb-2', 'pb-2', 'border-b', 'border-gray-200', 'flex', 'flex-col');
-                    li.innerHTML = `
-                        <p><strong>中文:</strong> ${item.chinese}</p>
-                        <p class="flex items-center"><strong>您输入:</strong> <span class="text-red-600">${item.typed || '[未输入]'}</span></p>
-                        <p class="flex items-center"><strong>正确答案:</strong> <span class="text-green-600">${item.correct}</span></p>
-                    `;
-                    // Add play button next to the correct answer in the results list
-                    const correctSpan = li.querySelector('.text-green-600');
-                    if (correctSpan) {
-                        correctSpan.parentNode.appendChild(createPlayButton(item.correct));
-                    }
-                    resultsList.appendChild(li);
-                });
-            }
-        }
-
         /**
          * Generates an example sentence using the Gemini API (gemini-2.0-flash).
-         * Optimized to require correct input/checked answer first.
          */
         async function getExampleSentence() {
-            const currentPair = shuffledVocabulary[currentWordIndex];
-            const englishWord = currentPair.english; // Always use the correct word for example sentence
+            console.log('[getExampleSentence] Attempting to get example sentence...');
+            const currentPair = appState.shuffledTestVocabulary[appState.currentWordIndex];
+            const englishWord = currentPair.english;
 
-            // --- 新增的逻辑：例句获取条件优化 ---
-            // 如果输入框为空，或者答案已经检查过但错误，则提示用户
             const isAnswerEmpty = answerInput.value.trim() === '';
             const isAnswerChecked = answerInput.readOnly;
             const isAnswerCorrect = answerInput.classList.contains('feedback-correct');
 
-            if (isAnswerEmpty && !isAnswerChecked) { // 如果没输入且还没检查
-                exampleSentenceDisplay.textContent = '请输入英文词汇或短语后再获取例句。';
+            if (isAnswerEmpty && !isAnswerChecked) {
+                showModal('请输入英文词汇或短语后再获取例句。');
+                console.warn('[getExampleSentence] Answer input is empty, cannot get example.');
                 return;
-            } else if (isAnswerChecked && !isAnswerCorrect) { // 如果已经检查且答案错误
-                 exampleSentenceDisplay.textContent = '请检查您的答案（红色部分），并查看正确答案，再获取例句。';
+            } else if (isAnswerChecked && !isAnswerCorrect) {
+                 showModal('请检查您的答案（红色部分），并查看正确答案，再获取例句。');
+                 console.warn('[getExampleSentence] Answer incorrect and checked, guiding user to correct first.');
                  return;
             }
-            // --- 结束新增逻辑 ---
 
-            exampleSentenceDisplay.innerHTML = '<div class="loading-spinner"></div>'; // Show loading spinner
-            getExampleBtn.disabled = true; // Disable button during loading
+            exampleSentenceDisplay.innerHTML = '<div class="loading-spinner"></div>';
+            getExampleBtn.disabled = true;
+            console.log(`[getExampleSentence] Prompting LLM for example of: "${englishWord}"`);
 
             try {
                 const prompt = `请提供一个关于英文词汇或短语 "${englishWord}" 的例句。例句需适合中级英语学习者，且句子内容避免过于简单或过于复杂。`;
@@ -423,7 +773,7 @@
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -437,52 +787,99 @@
                     result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
                     exampleSentenceDisplay.textContent = `例句: "${text}"`;
+                    console.log(`[getExampleSentence] LLM example received: "${text}"`);
                 } else {
                     exampleSentenceDisplay.textContent = '无法生成例句。请稍后再试。';
-                    console.error('LLM response structure unexpected:', result);
+                    console.error('[getExampleSentence] LLM response structure unexpected:', result);
                 }
             } catch (error) {
                 exampleSentenceDisplay.textContent = '获取例句失败。请检查网络或稍后再试。';
-                console.error('Error calling LLM API:', error);
+                console.error('[getExampleSentence] Error calling LLM API:', error);
             } finally {
-                if (!answerInput.readOnly) { // Only re-enable if answer hasn't been checked yet
+                if (!answerInput.readOnly) {
                     getExampleBtn.disabled = false;
                 }
+                console.log('[getExampleSentence] Example sentence request finished.');
             }
         }
 
-        // --- 语音合成初始化及事件监听 ---
-        // 尝试在页面加载时就加载语音资源
+        // --- Speech Synthesis Initialization ---
         if (speechSynth) {
             speechSynth.onvoiceschanged = () => {
                 voicesLoaded = true;
-                console.log('SpeechSynthesis voices loaded.');
-                // Optional: Play a tiny silent sound to "activate" Web Speech API on some mobile browsers
-                // This is a common workaround but not guaranteed to work everywhere.
-                // const silentUtterance = new SpeechSynthesisUtterance('');
-                // speechSynth.speak(silentUtterance);
+                console.log('[SpeechSynthesis] Voices loaded.');
             };
-            // 立即尝试加载一次，以防 onvoiceschanged 已经触发
             if (speechSynth.getVoices().length > 0) {
                 voicesLoaded = true;
-                console.log('SpeechSynthesis voices already available.');
+                console.log('[SpeechSynthesis] Voices already available.');
             }
         } else {
-            console.warn('浏览器不支持 SpeechSynthesis API。发音功能将不可用。');
+            console.warn('[SpeechSynthesis] 浏览器不支持 SpeechSynthesis API。发音功能将不可用。');
         }
-        // --- 结束语音合成初始化 ---
+
+        /**
+         * Utility function to shuffle an array.
+         * @param {Array} array
+         * @returns {Array}
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- Custom Modal Function (replaces alert/confirm) ---
+        function showModal(message) {
+            const modalHtml = `
+                <div id="custom-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
+                    <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center">
+                        <p class="text-lg font-semibold mb-6">${message}</p>
+                        <button id="modal-ok-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition duration-200">确定</button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            document.getElementById('modal-ok-btn').addEventListener('click', () => {
+                document.getElementById('custom-modal').remove();
+            });
+        }
 
 
-        // Event Listeners
+        // --- Event Listeners ---
+        // Start Test button on student info page
+        startTestBtn.addEventListener('click', () => {
+            console.log('[Event] Start Test button clicked.');
+            appState.studentName = studentNameInput.value.trim();
+            if (!appState.studentName) {
+                showModal('请输入您的姓名才能开始测试！');
+                console.warn('[Event] Student name not entered.');
+                return;
+            }
+            showView('test-view'); // Navigate to the test view
+        });
+
+        // Buttons for the dictation test view
         checkAnswerBtn.addEventListener('click', checkCurrentAnswer);
         nextWordBtn.addEventListener('click', nextWord);
-        endTestBtn.addEventListener('click', endTest); // New End Test button listener
-        restartTestBtn.addEventListener('click', initializeTest);
+        endTestBtn.addEventListener('click', endTestSession); // Call function to end test session
         getExampleBtn.addEventListener('click', getExampleSentence);
+
+        // Restart button for the results view
+        resultsRestartBtn.addEventListener('click', () => {
+            console.log('[Event] Restart Test button clicked.');
+            // Clear all selections and go back to the welcome screen to restart the entire flow
+            appState.studentName = ''; // Clear name for a fresh start
+            resetTestState(); // Completely reset test-related state
+            showView('info-view'); // Go back to info view to re-enter name
+        });
+
 
         // Allow pressing Enter key to check answer or move to next
         answerInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
+                console.log('[Event] Enter key pressed on answer input.');
                 if (!checkAnswerBtn.classList.contains('hidden')) {
                     checkCurrentAnswer();
                 } else if (!nextWordBtn.classList.contains('hidden')) {
@@ -492,8 +889,12 @@
         });
 
 
-        // Initialize the test by loading vocabulary when the page loads
-        document.addEventListener('DOMContentLoaded', loadVocabulary);
+        // --- Application Startup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('[App Startup] DOMContentLoaded fired. Initializing view.');
+            showView('info-view'); // Start directly at the info view for this simplified version
+        });
     </script>
 </body>
 </html>
+看下这个版本实现的交互有哪些？
