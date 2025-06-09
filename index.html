@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEFL 词汇听写测试 (无限练习)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .main-container {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .input-field {
+            border: 2px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-size: 1.125rem;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+
+        .feedback-correct {
+            background-color: #d1fae5; /* Light green */
+            border-color: #10b981;
+        }
+
+        .feedback-incorrect {
+            background-color: #fee2e2; /* Light red */
+            border-color: #ef4444;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
+            TOEFL 词汇听写测试 (无限练习)
+        </h1>
+
+        <div id="quiz-area" class="flex flex-col gap-6">
+            <div id="question-display" class="bg-blue-100 text-blue-900 text-3xl font-bold py-6 px-4 rounded-lg shadow-inner">
+                加载词汇...
+            </div>
+
+            <input type="text" id="answer-input" class="input-field" placeholder="在此输入英文词汇或短语..." autofocus>
+
+            <div id="example-sentence-display" class="bg-gray-50 p-4 rounded-lg shadow-inner text-gray-700 text-sm italic min-h-[60px] flex items-center justify-center">
+                点击 "获取例句" 查看上下文
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button id="get-example-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300">
+                    获取例句
+                </button>
+                <button id="check-answer-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    检查答案
+                </button>
+                <button id="next-word-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 hidden">
+                    下一个
+                </button>
+            </div>
+
+            <div class="flex justify-center mt-4">
+                <button id="end-test-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300">
+                    结束测试
+                </button>
+            </div>
+
+            <div id="feedback-message" class="text-lg font-semibold min-h-[30px]"></div>
+
+            <div id="final-results-area" class="hidden flex flex-col gap-4 mt-6">
+                <h2 class="text-2xl font-bold text-gray-800">本次练习结果</h2>
+                <div id="results-list" class="text-left bg-gray-50 p-4 rounded-lg shadow-inner"></div>
+                <button id="restart-test-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                    重新开始练习
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionDisplay = document.getElementById('question-display');
+        const answerInput = document.getElementById('answer-input');
+        const getExampleBtn = document.getElementById('get-example-btn');
+        const checkAnswerBtn = document.getElementById('check-answer-btn');
+        const nextWordBtn = document.getElementById('next-word-btn');
+        const endTestBtn = document.getElementById('end-test-btn'); // New End Test button
+        const feedbackMessage = document.getElementById('feedback-message');
+        const exampleSentenceDisplay = document.getElementById('example-sentence-display');
+        const finalResultsArea = document.getElementById('final-results-area');
+        const resultsList = document.getElementById('results-list');
+        const restartTestBtn = document.getElementById('restart-test-btn');
+
+        let vocabularyData = []; // This will be populated by fetching expressions.json
+        let shuffledVocabulary = []; // Shuffled list for the current test
+        let currentWordIndex = 0; // Tracks position in shuffledVocabulary
+        let correctAnswersCount = 0;
+        let questionsAttempted = 0; // Tracks total questions answered in the current session
+        let incorrectAnswers = []; // To store details of incorrect answers for final review
+
+        // LLM API Key (leave empty, Canvas provides it at runtime)
+        const apiKey = "";
+
+        /**
+         * Shuffles an array randomly using the Fisher-Yates algorithm.
+         * @param {Array} array - The array to shuffle.
+         * @returns {Array} The shuffled array.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        /**
+         * Loads vocabulary data from expressions.json.
+         */
+        async function loadVocabulary() {
+            questionDisplay.textContent = '加载词汇中...';
+            try {
+                const response = await fetch('expressions.json'); // Fetch the external JSON file
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                vocabularyData = await response.json();
+                if (vocabularyData.length === 0) {
+                    questionDisplay.textContent = '词汇列表为空。请在 expressions.json 中添加词汇。';
+                    return;
+                }
+                initializeTest();
+            } catch (error) {
+                questionDisplay.textContent = '加载词汇失败。请检查 expressions.json 是否存在且格式正确。';
+                console.error('Failed to load vocabulary:', error);
+            }
+        }
+
+        /**
+         * Initializes or resets the dictation test for endless practice.
+         */
+        function initializeTest() {
+            shuffledVocabulary = shuffleArray([...vocabularyData]); // Shuffle for a fresh test session
+            currentWordIndex = 0;
+            correctAnswersCount = 0;
+            questionsAttempted = 0;
+            incorrectAnswers = [];
+
+            // Reset UI elements
+            finalResultsArea.classList.add('hidden');
+            restartTestBtn.classList.add('hidden');
+            endTestBtn.classList.remove('hidden'); // Show End Test button
+            answerInput.classList.remove('feedback-correct', 'feedback-incorrect');
+            answerInput.readOnly = false;
+            answerInput.value = '';
+            feedbackMessage.textContent = '';
+            feedbackMessage.classList.remove('text-green-600', 'text-red-600');
+            exampleSentenceDisplay.textContent = '点击 "获取例句" 查看上下文';
+            getExampleBtn.disabled = false;
+            checkAnswerBtn.classList.remove('hidden');
+            nextWordBtn.classList.add('hidden'); // Hide next button initially
+
+            loadQuestion();
+        }
+
+        /**
+         * Loads the current Chinese word/phrase for dictation.
+         * Loops back to the start of shuffled list for endless practice.
+         */
+        function loadQuestion() {
+            // Loop back to the beginning if all words in the shuffled list have been shown
+            if (currentWordIndex >= shuffledVocabulary.length) {
+                shuffledVocabulary = shuffleArray([...vocabularyData]); // Re-shuffle for new cycle
+                currentWordIndex = 0;
+            }
+
+            const currentPair = shuffledVocabulary[currentWordIndex];
+            questionDisplay.textContent = currentPair.chinese;
+            answerInput.value = ''; // Clear previous input
+            answerInput.classList.remove('feedback-correct', 'feedback-incorrect');
+            answerInput.readOnly = false; // Make input editable
+            answerInput.focus(); // Focus input for quick typing
+            feedbackMessage.textContent = '';
+            feedbackMessage.classList.remove('text-green-600', 'text-red-600');
+            nextWordBtn.classList.add('hidden'); // Hide next button
+            checkAnswerBtn.classList.remove('hidden'); // Show check button
+            exampleSentenceDisplay.textContent = '点击 "获取例句" 查看上下文'; // Reset example sentence display
+            getExampleBtn.disabled = false; // Re-enable get example button
+        }
+
+        /**
+         * Checks the student's typed answer against the correct English expression.
+         */
+        function checkCurrentAnswer() {
+            questionsAttempted++; // Increment attempted count for current session
+            const typedAnswer = answerInput.value.trim();
+            const correctEnglish = shuffledVocabulary[currentWordIndex].english.trim();
+
+            answerInput.readOnly = true; // Prevent further edits after checking
+            getExampleBtn.disabled = true; // Disable example sentence after checking
+
+            if (typedAnswer.toLowerCase() === correctEnglish.toLowerCase()) {
+                feedbackMessage.textContent = '正确！👍';
+                feedbackMessage.classList.remove('text-red-600');
+                feedbackMessage.classList.add('text-green-600');
+                answerInput.classList.add('feedback-correct');
+                correctAnswersCount++;
+            } else {
+                feedbackMessage.textContent = `错误！正确答案是: "${correctEnglish}" 👎`;
+                feedbackMessage.classList.remove('text-green-600');
+                feedbackMessage.classList.add('text-red-600');
+                answerInput.classList.add('feedback-incorrect');
+                incorrectAnswers.push({
+                    chinese: shuffledVocabulary[currentWordIndex].chinese,
+                    typed: typedAnswer,
+                    correct: correctEnglish
+                });
+            }
+
+            checkAnswerBtn.classList.add('hidden'); // Hide check button
+            nextWordBtn.classList.remove('hidden'); // Show next button
+        }
+
+        /**
+         * Transitions to the next word in the sequence.
+         */
+        function nextWord() {
+            currentWordIndex++;
+            loadQuestion();
+        }
+
+        /**
+         * Ends the current practice session and shows the results.
+         */
+        function endTest() {
+            questionDisplay.textContent = `练习结束！`;
+            answerInput.classList.add('hidden'); // Hide input
+            getExampleBtn.classList.add('hidden');
+            checkAnswerBtn.classList.add('hidden');
+            nextWordBtn.classList.add('hidden');
+            endTestBtn.classList.add('hidden'); // Hide End Test button
+            feedbackMessage.textContent = '';
+            exampleSentenceDisplay.classList.add('hidden');
+
+            finalResultsArea.classList.remove('hidden');
+            restartTestBtn.classList.remove('hidden');
+
+            resultsList.innerHTML = '';
+            if (questionsAttempted === 0) {
+                resultsList.innerHTML = '<p class="text-gray-700">您还没有开始练习哦！</p>';
+            } else if (incorrectAnswers.length === 0 && correctAnswersCount === questionsAttempted) {
+                resultsList.innerHTML = `<p class="text-green-700">太棒了！本次练习您答对了 ${correctAnswersCount} / ${questionsAttempted} 题，所有题目都正确！</p>`;
+            } else {
+                const summary = document.createElement('p');
+                summary.classList.add('font-bold', 'mb-4', 'text-gray-800');
+                summary.textContent = `本次练习您答对了 ${correctAnswersCount} / ${questionsAttempted} 题。`;
+                resultsList.appendChild(summary);
+
+                const incorrectHeader = document.createElement('p');
+                incorrectHeader.classList.add('font-bold', 'mb-2', 'text-red-700');
+                incorrectHeader.textContent = `以下是您答错的题目 (${incorrectAnswers.length} 题):`;
+                resultsList.appendChild(incorrectHeader);
+
+                incorrectAnswers.forEach(item => {
+                    const li = document.createElement('li');
+                    li.classList.add('mb-2', 'pb-2', 'border-b', 'border-gray-200');
+                    li.innerHTML = `
+                        <p><strong>中文:</strong> ${item.chinese}</p>
+                        <p><strong>您输入:</strong> <span class="text-red-600">${item.typed || '[未输入]'}</span></p>
+                        <p><strong>正确答案:</strong> <span class="text-green-600">${item.correct}</span></p>
+                    `;
+                    resultsList.appendChild(li);
+                });
+            }
+        }
+
+        /**
+         * Generates an example sentence using the Gemini API (gemini-2.0-flash).
+         */
+        async function getExampleSentence() {
+            const currentPair = shuffledVocabulary[currentWordIndex];
+            const englishWord = currentPair.english;
+
+            exampleSentenceDisplay.innerHTML = '<div class="loading-spinner"></div>'; // Show loading spinner
+            getExampleBtn.disabled = true; // Disable button during loading
+
+            try {
+                const prompt = `Please provide an example sentence in English using the word/phrase "${englishWord}". The sentence should be appropriate for an intermediate English learner.`;
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    exampleSentenceDisplay.textContent = `例句: "${text}"`;
+                } else {
+                    exampleSentenceDisplay.textContent = '无法生成例句。请稍后再试。';
+                    console.error('LLM response structure unexpected:', result);
+                }
+            } catch (error) {
+                exampleSentenceDisplay.textContent = '获取例句失败。请检查网络或稍后再试。';
+                console.error('Error calling LLM API:', error);
+            } finally {
+                if (!answerInput.readOnly) { // Only re-enable if answer hasn't been checked yet
+                    getExampleBtn.disabled = false;
+                }
+            }
+        }
+
+        // Event Listeners
+        checkAnswerBtn.addEventListener('click', checkCurrentAnswer);
+        nextWordBtn.addEventListener('click', nextWord);
+        endTestBtn.addEventListener('click', endTest); // New End Test button listener
+        restartTestBtn.addEventListener('click', initializeTest);
+        getExampleBtn.addEventListener('click', getExampleSentence);
+
+        // Allow pressing Enter key to check answer or move to next
+        answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                if (!checkAnswerBtn.classList.contains('hidden')) {
+                    checkCurrentAnswer();
+                } else if (!nextWordBtn.classList.contains('hidden')) {
+                    nextWord();
+                }
+            }
+        });
+
+
+        // Initialize the test by loading vocabulary when the page loads
+        document.addEventListener('DOMContentLoaded', loadVocabulary);
+    </script>
+</body>
+</html>
