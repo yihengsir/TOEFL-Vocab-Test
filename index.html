@@ -282,6 +282,7 @@
             transition-duration: 200ms;
         }
         .quiz-input-field:focus {
+            outline: none;
             border-color: #3b82f6; /* focus:border-blue-500 */
             box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5); /* focus:ring-2 focus:ring-blue-200 */
         }
@@ -334,8 +335,6 @@
         <div id="info-view" class="view">
             <p class="text-xl text-gray-700 mb-8">请填写您的信息以开始测试：</p>
             <input type="text" id="student-name-input" class="input-field mb-4" placeholder="请输入您的姓名" />
-            <!-- Class input removed as per single file customization, but left here if needed in future for class student -->
-            <!-- <input type="text" id="student-class-input" class="input-field mb-6 hidden" placeholder="请输入您的班级 (班课学生)" /> -->
             <button id="start-test-btn" class="btn-primary">开始测试</button>
         </div>
 
@@ -380,8 +379,6 @@
             </h2>
             <div id="test-summary" class="text-left text-lg text-gray-800 mb-6">
                 <p><strong>姓名:</strong> <span id="summary-name"></span></p>
-                <!-- Class row hidden for this single-file version -->
-                <!-- <p id="summary-class-row"><strong>班级:</strong> <span id="summary-class"></span></p> -->
                 <p><strong>日期:</strong> <span id="summary-date"></span></p>
                 <p><strong>正确率:</strong> <span id="summary-accuracy" class="font-bold"></span></p>
             </div>
@@ -516,7 +513,8 @@
             exampleSentenceDisplay.classList.add('hidden');
 
             try {
-                const response = await fetch('expressions.json'); // Always load expressions.json for this version
+                // Fetching from expressions.json as per the current model's output for custom version
+                const response = await fetch('expressions.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status} from expressions.json`);
                 }
@@ -581,7 +579,27 @@
 
             // Normal loading of a question
             const currentPair = appState.shuffledTestVocabulary[appState.currentWordIndex];
-            questionDisplay.textContent = currentPair.chinese;
+            
+            // Display Chinese with Part of Speech
+            let chineseDisplay = currentPair.chinese;
+            if (currentPair.pos) { // Check if 'pos' field exists
+                chineseDisplay += ` (${currentPair.pos})`;
+            }
+            questionDisplay.textContent = chineseDisplay;
+
+            // Generate placeholder with first letter hints for phrases
+            let placeholderText = "在此输入英文词汇或短语...";
+            if (currentPair.english.includes(' ')) { // It's a phrase if it contains spaces
+                placeholderText = currentPair.english.split(' ').map(word => {
+                    if (word.length > 0) {
+                        return word[0] + '_'.repeat(word.length - 1);
+                    }
+                    return '';
+                }).join(' ');
+            }
+            answerInput.placeholder = placeholderText;
+
+
             answerInput.value = '';
             // Ensure input is visible and active for new question
             answerInput.classList.remove('feedback-correct', 'feedback-incorrect', 'hidden');
