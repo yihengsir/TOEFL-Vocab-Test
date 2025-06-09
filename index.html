@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL 词汇听写测试 (锋锋老师beta版)</title>
+    <title>TOEFL 词汇听写测试 (锋锋老师)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for speaker icon -->
@@ -159,6 +159,7 @@
         // LLM API Key (leave empty, Canvas provides it at runtime)
         const apiKey = "AIzaSyD7Tb_4ttDNI__kLiLgVyuZgCt-fcoQLCA";
         let speechSynth = window.speechSynthesis; // Web Speech API for pronunciation
+        let voicesLoaded = false; // Flag to track if voices are loaded
 
         /**
          * Shuffles an array randomly using the Fisher-Yates algorithm.
@@ -178,13 +179,31 @@
          * @param {string} word - The word to pronounce.
          */
         function playPronunciation(word) {
-            if (speechSynth) {
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = 'en-US'; // Set language for English pronunciation
-                speechSynth.speak(utterance);
-            } else {
-                console.warn('SpeechSynthesis API not supported in this browser.');
+            // Check if SpeechSynthesis API is supported and if voices are loaded
+            if (!speechSynth || !voicesLoaded) {
+                console.warn('SpeechSynthesis API not ready or supported in this browser.');
+                // feedbackMessage.textContent = '抱歉，当前设备不支持语音播放。'; // 可以选择给用户提示
+                return;
             }
+
+            // If already speaking, cancel the current utterance before speaking a new one
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US'; // Set language for English pronunciation
+            utterance.volume = 1;     // Volume (0 to 1)
+            utterance.rate = 1;       // Rate (0.1 to 10)
+            utterance.pitch = 1;      // Pitch (0 to 2)
+
+            // Optional: Choose a specific voice if you have a preference after voices are loaded
+            // let selectedVoice = speechSynth.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('Google US English'));
+            // if (selectedVoice) {
+            //     utterance.voice = selectedVoice;
+            // }
+
+            speechSynth.speak(utterance);
         }
 
         /**
@@ -198,7 +217,7 @@
             button.innerHTML = '<i class="fas fa-volume-up"></i>'; // Font Awesome speaker icon
             button.title = `播放 "${wordToSpeak}" 的发音`;
             button.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering parent element's events
+                e.stopPropagation(); // Prevent triggering parent element's events (e.g., if inside a larger clickable area)
                 playPronunciation(wordToSpeak);
             });
             return button;
@@ -431,6 +450,28 @@
                 }
             }
         }
+
+        // --- 语音合成初始化及事件监听 ---
+        // 尝试在页面加载时就加载语音资源
+        if (speechSynth) {
+            speechSynth.onvoiceschanged = () => {
+                voicesLoaded = true;
+                console.log('SpeechSynthesis voices loaded.');
+                // Optional: Play a tiny silent sound to "activate" Web Speech API on some mobile browsers
+                // This is a common workaround but not guaranteed to work everywhere.
+                // const silentUtterance = new SpeechSynthesisUtterance('');
+                // speechSynth.speak(silentUtterance);
+            };
+            // 立即尝试加载一次，以防 onvoiceschanged 已经触发
+            if (speechSynth.getVoices().length > 0) {
+                voicesLoaded = true;
+                console.log('SpeechSynthesis voices already available.');
+            }
+        } else {
+            console.warn('浏览器不支持 SpeechSynthesis API。发音功能将不可用。');
+        }
+        // --- 结束语音合成初始化 ---
+
 
         // Event Listeners
         checkAnswerBtn.addEventListener('click', checkCurrentAnswer);
