@@ -1,252 +1,117 @@
 [
-  {
-    "chinese": "取消；终止",
-    "english": "eliminate",
-    "pos": "v."
-  },
-  {
-    "chinese": "国际的；国际化的",
-    "english": "international",
-    "pos": "adj."
-  },
-  {
-    "chinese": "来源",
-    "english": "source",
-    "pos": "n."
-  },
-  {
-    "chinese": "日历",
-    "english": "calendar",
-    "pos": "n."
-  },
-  {
-    "chinese": "校园",
-    "english": "campus",
-    "pos": "n."
-  },
-  {
-    "chinese": "通知",
-    "english": "announcement",
-    "pos": "n."
-  },
-  {
-    "chinese": "提议",
-    "english": "proposal",
-    "pos": "n."
-  },
-  {
-    "chinese": "施工；建设",
-    "english": "construction",
-    "pos": "n."
-  },
-  {
-    "chinese": "扰乱性的",
-    "english": "disruptive",
-    "pos": "adj."
-  },
-  {
-    "chinese": "一段时间",
-    "english": "session",
-    "pos": "n."
-  },
-  {
-    "chinese": "不便；麻烦",
-    "english": "inconvenience",
-    "pos": "n."
-  },
-  {
-    "chinese": "真诚地",
-    "english": "sincerely",
-    "pos": "adv."
-  },
-  {
-    "chinese": "有空的",
-    "english": "available",
-    "pos": "adj."
-  },
-  {
-    "chinese": "借",
-    "english": "borrow",
-    "pos": "v."
-  },
-  {
-    "chinese": "项目；物品",
-    "english": "item",
-    "pos": "n."
-  },
-  {
-    "chinese": "图书馆",
-    "english": "library",
-    "pos": "n."
-  },
-  {
-    "chinese": "员工",
-    "english": "staff",
-    "pos": "n."
-  },
-  {
-    "chinese": "标题",
-    "english": "title",
-    "pos": "n."
-  },
-  {
-    "chinese": "（综合性）大学",
-    "english": "university",
-    "pos": "n."
-  },
-  {
-    "chinese": "（正式地）要求",
-    "english": "request",
-    "pos": "v."
-  },
-  {
-    "chinese": "设施，设备",
-    "english": "facility",
-    "pos": "n."
-  },
-  {
-    "chinese": "改善，提升",
-    "english": "improve",
-    "pos": "v."
-  },
-  {
-    "chinese": "公告",
-    "english": "bulletin",
-    "pos": "n."
-  },
-  {
-    "chinese": "表达，表露",
-    "english": "express",
-    "pos": "v."
-  },
-  {
-    "chinese": "简短地，简要地",
-    "english": "briefly",
-    "pos": "adv."
-  },
-  {
-    "chinese": "状态，状况",
-    "english": "state",
-    "pos": "n."
-  },
-  {
-    "chinese": "每日的，日常的",
-    "english": "daily",
-    "pos": "adj."
-  },
-  {
-    "chinese": "板块；部分",
-    "english": "section",
-    "pos": "n."
-  },
-  {
-    "chinese": "包含最新信息的",
-    "english": "up-to-date",
-    "pos": "adj."
-  },
-  {
-    "chinese": "报道；覆盖范围",
-    "english": "coverage",
-    "pos": "n."
-  },
-  {
-    "chinese": "项目；计划",
-    "english": "project",
-    "pos": "n."
-  },
-  {
-    "chinese": "人行道",
-    "english": "sidewalk",
-    "pos": "n."
-  },
-  {
-    "chinese": "计划（表）",
-    "english": "schedule",
-    "pos": "n."
-  },
-  {
-    "chinese": "额外的",
-    "english": "extra",
-    "pos": "adj."
-  },
-  {
-    "chinese": "焦虑，压力",
-    "english": "strain",
-    "pos": "n."
-  },
-  {
-    "chinese": "预算",
-    "english": "budget",
-    "pos": "n."
-  },
-  {
-    "chinese": "暴风雪",
-    "english": "snowstorm",
-    "pos": "n."
-  },
-  {
-    "chinese": "收藏品",
-    "english": "collection",
-    "pos": "n."
-  },
-  {
-    "chinese": "特定的",
-    "english": "certain",
-    "pos": "n."
-  },
-  {
-    "chinese": "修理，修补",
-    "english": "repair",
-    "pos": "v."
-  },
-  {
-    "chinese": "报道；覆盖",
-    "english": "cover",
-    "pos": "v."
-  },
-  {
-    "chinese": "海报",
-    "english": "poster",
-    "pos": "n."
-  },
-  {
-    "chinese": "现在地",
-    "english": "currently",
-    "pos": "adv."
-  },
-  {
-    "chinese": "权限；通道",
-    "english": "access",
-    "pos": "n."
-  },
-  {
-    "chinese": "停车场",
-    "english": "lot",
-    "pos": "n."
-  },
-  {
-    "chinese": "场所",
-    "english": "spot",
-    "pos": "n."
-  },
-  {
-    "chinese": "确切的",
-    "english": "exact",
-    "pos": "adj."
-  },
-  {
-    "chinese": "几乎不",
-    "english": "hardly",
-    "pos": "adv."
-  },
-  {
-    "chinese": "东西，物品",
-    "english": "stuff",
-    "pos": "n."
-  },
-  {
-    "chinese": "主要的",
-    "english": "major",
-    "pos": "adj."
-  }
+    {
+        "chinese": "有效的",
+        "english": "effective",
+        "pos": "adj."
+    },
+    {
+        "chinese": "过程",
+        "english": "process",
+        "pos": "n."
+    },
+    {
+        "chinese": "出勤率",
+        "english": "attendance",
+        "pos": "n."
+    },
+    {
+        "chinese": "积极的参与者",
+        "english": "active contributors",
+        "pos": "n."
+    },
+    {
+        "chinese": "公平的",
+        "english": "fair",
+        "pos": "adj."
+    },
+    {
+        "chinese": "期中考试",
+        "english": "midterm",
+        "pos": "n."
+    },
+    {
+        "chinese": "表现不佳",
+        "english": "underperforms",
+        "pos": "v."
+    },
+    {
+        "chinese": "体面的分数",
+        "english": "decent score",
+        "pos": "n."
+    },
+    {
+        "chinese": "保持专注",
+        "english": "stay engaged",
+        "pos": "v."
+    },
+    {
+        "chinese": "批判性思考",
+        "english": "think critically",
+        "pos": "v."
+    },
+    {
+        "chinese": "提出有意义的观点",
+        "english": "contributes meaningful",
+        "pos": "v."
+    },
+    {
+        "chinese": "对学习材料的理解",
+        "english": "understanding of the material",
+        "pos": "n."
+    },
+    {
+        "chinese": "更公平的评估",
+        "english": "fairer evaluation",
+        "pos": "n."
+    },
+    {
+        "chinese": "挣扎；遇到困难",
+        "english": "struggles",
+        "pos": "v."
+    },
+    {
+        "chinese": "展示他们的理解",
+        "english": "showcase their understanding",
+        "pos": "v."
+    },
+    {
+        "chinese": "更努力地学习",
+        "english": "work harder",
+        "pos": "v."
+    },
+    {
+        "chinese": "展示他们的知识",
+        "english": "demonstrate their knowledge",
+        "pos": "v."
+    },
+    {
+        "chinese": "进行研究",
+        "english": "conduct research",
+        "pos": "v."
+    },
+    {
+        "chinese": "构建有逻辑（严密的论点）",
+        "english": "construct logical arguments",
+        "pos": "v."
+    },
+    {
+        "chinese": "反映",
+        "english": "reflects",
+        "pos": "v."
+    },
+    {
+        "chinese": "评分的一致性",
+        "english": "consistency in grading",
+        "pos": "n."
+    },
+    {
+        "chinese": "被公平地评估",
+        "english": "assessed fairly",
+        "pos": "v."
+    },
+    {
+        "chinese": "最小化（减少）",
+        "english": "minimizes",
+        "pos": "v."
+    }
 ]
