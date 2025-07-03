@@ -1,117 +1,667 @@
 [
     {
-        "chinese": "有效的",
-        "english": "effective",
-        "pos": "adj."
-    },
-    {
-        "chinese": "过程",
-        "english": "process",
+        "chinese": "极光",
+        "english": "aurora",
         "pos": "n."
     },
     {
-        "chinese": "出勤率",
-        "english": "attendance",
+        "chinese": "太阳风",
+        "english": "solar wind",
         "pos": "n."
     },
     {
-        "chinese": "积极的参与者",
-        "english": "active contributors",
+        "chinese": "电磁理论",
+        "english": "electromagnetic theory",
         "pos": "n."
     },
     {
-        "chinese": "公平的",
-        "english": "fair",
-        "pos": "adj."
-    },
-    {
-        "chinese": "期中考试",
-        "english": "midterm",
+        "chinese": "等离子体",
+        "english": "plasma",
         "pos": "n."
     },
     {
-        "chinese": "表现不佳",
-        "english": "underperforms",
-        "pos": "v."
-    },
-    {
-        "chinese": "体面的分数",
-        "english": "decent score",
+        "chinese": "磁层",
+        "english": "magnetosphere",
         "pos": "n."
     },
     {
-        "chinese": "保持专注",
-        "english": "stay engaged",
-        "pos": "v."
-    },
-    {
-        "chinese": "批判性思考",
-        "english": "think critically",
-        "pos": "v."
-    },
-    {
-        "chinese": "提出有意义的观点",
-        "english": "contributes meaningful",
-        "pos": "v."
-    },
-    {
-        "chinese": "对学习材料的理解",
-        "english": "understanding of the material",
+        "chinese": "激发态",
+        "english": "excited state",
         "pos": "n."
     },
     {
-        "chinese": "更公平的评估",
-        "english": "fairer evaluation",
+        "chinese": "大气分子",
+        "english": "atmospheric molecules",
         "pos": "n."
     },
     {
-        "chinese": "挣扎；遇到困难",
-        "english": "struggles",
-        "pos": "v."
-    },
-    {
-        "chinese": "展示他们的理解",
-        "english": "showcase their understanding",
-        "pos": "v."
-    },
-    {
-        "chinese": "更努力地学习",
-        "english": "work harder",
-        "pos": "v."
-    },
-    {
-        "chinese": "展示他们的知识",
-        "english": "demonstrate their knowledge",
-        "pos": "v."
-    },
-    {
-        "chinese": "进行研究",
-        "english": "conduct research",
-        "pos": "v."
-    },
-    {
-        "chinese": "构建有逻辑（严密的论点）",
-        "english": "construct logical arguments",
-        "pos": "v."
-    },
-    {
-        "chinese": "反映",
-        "english": "reflects",
-        "pos": "v."
-    },
-    {
-        "chinese": "评分的一致性",
-        "english": "consistency in grading",
+        "chinese": "极地地区",
+        "english": "polar regions",
         "pos": "n."
     },
     {
-        "chinese": "被公平地评估",
-        "english": "assessed fairly",
-        "pos": "v."
+        "chinese": "电离层",
+        "english": "ionosphere",
+        "pos": "n."
     },
     {
-        "chinese": "最小化（减少）",
-        "english": "minimizes",
-        "pos": "v."
+        "chinese": "磁倾角",
+        "english": "magnetic inclination",
+        "pos": "n."
+    },
+    {
+        "chinese": "带电粒子",
+        "english": "charged particles",
+        "pos": "n."
+    },
+    {
+        "chinese": "热层",
+        "english": "thermosphere",
+        "pos": "n."
+    },
+    {
+        "chinese": "极光卵",
+        "english": "auroral oval",
+        "pos": "n."
+    },
+    {
+        "chinese": "地磁风暴",
+        "english": "geomagnetic storm",
+        "pos": "n."
+    },
+    {
+        "chinese": "光谱线",
+        "english": "spectral line",
+        "pos": "n."
+    },
+    {
+        "chinese": "动态范围",
+        "english": "dynamic range",
+        "pos": "n."
+    },
+    {
+        "chinese": "感知动态范围",
+        "english": "perceptual dynamic range",
+        "pos": "n."
+    },
+    {
+        "chinese": "区域系统",
+        "english": "zone system",
+        "pos": "n."
+    },
+    {
+        "chinese": "高动态范围摄影",
+        "english": "HDR photography",
+        "pos": "n."
+    },
+    {
+        "chinese": "曝光不足",
+        "english": "underexposure",
+        "pos": "n."
+    },
+    {
+        "chinese": "过度曝光",
+        "english": "overexposure",
+        "pos": "n."
+    },
+    {
+        "chinese": "色调映射",
+        "english": "tone mapping",
+        "pos": "n."
+    },
+    {
+        "chinese": "伽马校正",
+        "english": "gamma correction",
+        "pos": "n."
+    },
+    {
+        "chinese": "局部对比度",
+        "english": "local contrast",
+        "pos": "n."
+    },
+    {
+        "chinese": "直方图",
+        "english": "histogram",
+        "pos": "n."
+    },
+    {
+        "chinese": "网点扩大",
+        "english": "dot gain",
+        "pos": "n."
+    },
+    {
+        "chinese": "密度范围",
+        "english": "density range",
+        "pos": "n."
+    },
+    {
+        "chinese": "互易律失效",
+        "english": "reciprocity failure",
+        "pos": "n."
+    },
+    {
+        "chinese": "科普法则",
+        "english": "Cope's rule",
+        "pos": "n."
+    },
+    {
+        "chinese": "化石谱系",
+        "english": "fossil lineage",
+        "pos": "n."
+    },
+    {
+        "chinese": "进化生物学",
+        "english": "evolutionary biology",
+        "pos": "n."
+    },
+    {
+        "chinese": "自然选择",
+        "english": "natural selection",
+        "pos": "n."
+    },
+    {
+        "chinese": "适应性辐射",
+        "english": "adaptive radiation",
+        "pos": "n."
+    },
+    {
+        "chinese": "异速生长",
+        "english": "allometry",
+        "pos": "n."
+    },
+    {
+        "chinese": "系统发育",
+        "english": "phylogeny",
+        "pos": "n."
+    },
+    {
+        "chinese": "趋同进化",
+        "english": "convergent evolution",
+        "pos": "n."
+    },
+    {
+        "chinese": "间断平衡",
+        "english": "punctuated equilibrium",
+        "pos": "n."
+    },
+    {
+        "chinese": "表型可塑性",
+        "english": "phenotypic plasticity",
+        "pos": "n."
+    },
+    {
+        "chinese": "系统发生树",
+        "english": "phylogenetic tree",
+        "pos": "n."
+    },
+    {
+        "chinese": "同源特征",
+        "english": "homologous trait",
+        "pos": "n."
+    },
+    {
+        "chinese": "适应度",
+        "english": "fitness",
+        "pos": "n."
+    },
+    {
+        "chinese": "遗传漂变",
+        "english": "genetic drift",
+        "pos": "n."
+    },
+    {
+        "chinese": "共进化",
+        "english": "coevolution",
+        "pos": "n."
+    },
+    {
+        "chinese": "因纽特人",
+        "english": "Inuit",
+        "pos": "n."
+    },
+    {
+        "chinese": "浮木",
+        "english": "driftwood",
+        "pos": "n."
+    },
+    {
+        "chinese": "草皮",
+        "english": "sod",
+        "pos": "n."
+    },
+    {
+        "chinese": "隧道入口",
+        "english": "tunnel entrance",
+        "pos": "n."
+    },
+    {
+        "chinese": "通风孔",
+        "english": "ventilation hole",
+        "pos": "n."
+    },
+    {
+        "chinese": "半地下房屋",
+        "english": "semi-subterranean house",
+        "pos": "n."
+    },
+    {
+        "chinese": "兽皮覆盖",
+        "english": "animal hide covering",
+        "pos": "n."
+    },
+    {
+        "chinese": "雪砖",
+        "english": "snow block",
+        "pos": "n."
+    },
+    {
+        "chinese": "冰屋",
+        "english": "igloo",
+        "pos": "n."
+    },
+    {
+        "chinese": "热辐射",
+        "english": "thermal radiation",
+        "pos": "n."
+    },
+    {
+        "chinese": "防寒层",
+        "english": "cold insulation layer",
+        "pos": "n."
+    },
+    {
+        "chinese": "捕鲸站",
+        "english": "whaling station",
+        "pos": "n."
+    },
+    {
+        "chinese": "皮划艇",
+        "english": "kayak",
+        "pos": "n."
+    },
+    {
+        "chinese": "鱼叉",
+        "english": "harpoon",
+        "pos": "n."
+    },
+    {
+        "chinese": "苔原气候",
+        "english": "tundra climate",
+        "pos": "n."
+    },
+    {
+        "chinese": "韧皮部",
+        "english": "phloem",
+        "pos": "n."
+    },
+    {
+        "chinese": "光合作用",
+        "english": "photosynthesis",
+        "pos": "n."
+    },
+    {
+        "chinese": "树液",
+        "english": "sap",
+        "pos": "n."
+    },
+    {
+        "chinese": "树液采集",
+        "english": "tapping",
+        "pos": "n."
+    },
+    {
+        "chinese": "糖枫",
+        "english": "sugar maple",
+        "pos": "n."
+    },
+    {
+        "chinese": "黑枫",
+        "english": "black maple",
+        "pos": "n."
+    },
+    {
+        "chinese": "形成层",
+        "english": "cambium",
+        "pos": "n."
+    },
+    {
+        "chinese": "木质部",
+        "english": "xylem",
+        "pos": "n."
+    },
+    {
+        "chinese": "蒸腾作用",
+        "english": "transpiration",
+        "pos": "n."
+    },
+    {
+        "chinese": "液流压力",
+        "english": "sap flow pressure",
+        "pos": "n."
+    },
+    {
+        "chinese": "糖含量",
+        "english": "sugar content",
+        "pos": "n."
+    },
+    {
+        "chinese": "熬糖房",
+        "english": "sugar shack",
+        "pos": "n."
+    },
+    {
+        "chinese": "糖浆等级",
+        "english": "syrup grade",
+        "pos": "n."
+    },
+    {
+        "chinese": "糖枫节",
+        "english": "Maple Syrup Festival",
+        "pos": "n."
+    },
+    {
+        "chinese": "韧皮部装载",
+        "english": "phloem loading",
+        "pos": "n."
+    },
+    {
+        "chinese": "天体生物学",
+        "english": "astrobiology",
+        "pos": "n."
+    },
+    {
+        "chinese": "微生物",
+        "english": "microbe",
+        "pos": "n."
+    },
+    {
+        "chinese": "孢子",
+        "english": "spore",
+        "pos": "n."
+    },
+    {
+        "chinese": "木卫二",
+        "english": "Europa",
+        "pos": "n."
+    },
+    {
+        "chinese": "伽利略号",
+        "english": "Galileo",
+        "pos": "n."
+    },
+    {
+        "chinese": "系外行星",
+        "english": "exoplanet",
+        "pos": "n."
+    },
+    {
+        "chinese": "极端微生物",
+        "english": "extremophile",
+        "pos": "n."
+    },
+    {
+        "chinese": "生源说",
+        "english": "panspermia",
+        "pos": "n."
+    },
+    {
+        "chinese": "宜居带",
+        "english": "habitable zone",
+        "pos": "n."
+    },
+    {
+        "chinese": "辐射抗性",
+        "english": "radiation resistance",
+        "pos": "n."
+    },
+    {
+        "chinese": "星际介质",
+        "english": "interstellar medium",
+        "pos": "n."
+    },
+    {
+        "chinese": "嗜热菌",
+        "english": "thermophile",
+        "pos": "n."
+    },
+    {
+        "chinese": "欧罗巴快船",
+        "english": "Europa Clipper",
+        "pos": "n."
+    },
+    {
+        "chinese": "卡西尼号",
+        "english": "Cassini",
+        "pos": "n."
+    },
+    {
+        "chinese": "土卫二",
+        "english": "Enceladus",
+        "pos": "n."
+    },
+    {
+        "chinese": "差异化优势",
+        "english": "differential advantage",
+        "pos": "n."
+    },
+    {
+        "chinese": "金融服务",
+        "english": "financial services",
+        "pos": "n."
+    },
+    {
+        "chinese": "网络营销",
+        "english": "internet marketing",
+        "pos": "n."
+    },
+    {
+        "chinese": "法规",
+        "english": "regulations",
+        "pos": "n."
+    },
+    {
+        "chinese": "营销策略",
+        "english": "marketing strategy",
+        "pos": "n."
+    },
+    {
+        "chinese": "价值主张",
+        "english": "value proposition",
+        "pos": "n."
+    },
+    {
+        "chinese": "用户画像",
+        "english": "user persona",
+        "pos": "n."
+    },
+    {
+        "chinese": "转化漏斗",
+        "english": "conversion funnel",
+        "pos": "n."
+    },
+    {
+        "chinese": "搜索引擎优化",
+        "english": "SEO (Search Engine Optimization)",
+        "pos": "n."
+    },
+    {
+        "chinese": "社交媒体营销",
+        "english": "social media marketing",
+        "pos": "n."
+    },
+    {
+        "chinese": "内容营销",
+        "english": "content marketing",
+        "pos": "n."
+    },
+    {
+        "chinese": "A/B测试",
+        "english": "A/B testing",
+        "pos": "n."
+    },
+    {
+        "chinese": "客户关系管理",
+        "english": "CRM (Customer Relationship Management)",
+        "pos": "n."
+    },
+    {
+        "chinese": "病毒式营销",
+        "english": "viral marketing",
+        "pos": "n."
+    },
+    {
+        "chinese": "营销自动化",
+        "english": "marketing automation",
+        "pos": "n."
+    },
+    {
+        "chinese": "联合注意",
+        "english": "joint attention",
+        "pos": "n."
+    },
+    {
+        "chinese": "意向性沟通",
+        "english": "intentional communication",
+        "pos": "n."
+    },
+    {
+        "chinese": "词汇发展",
+        "english": "vocabulary development",
+        "pos": "n."
+    },
+    {
+        "chinese": "社会情感发展",
+        "english": "social-emotional development",
+        "pos": "n."
+    },
+    {
+        "chinese": "发展障碍",
+        "english": "developmental disabilities",
+        "pos": "n."
+    },
+    {
+        "chinese": "共同关注机制",
+        "english": "shared attention mechanism",
+        "pos": "n."
+    },
+    {
+        "chinese": "眼神追踪",
+        "english": "eye tracking",
+        "pos": "n."
+    },
+    {
+        "chinese": "前语言阶段",
+        "english": "prelinguistic stage",
+        "pos": "n."
+    },
+    {
+        "chinese": "手势沟通",
+        "english": "gestural communication",
+        "pos": "n."
+    },
+    {
+        "chinese": "心理理论",
+        "english": "theory of mind",
+        "pos": "n."
+    },
+    {
+        "chinese": "社会参照",
+        "english": "social referencing",
+        "pos": "n."
+    },
+    {
+        "chinese": "互动同步",
+        "english": "interactional synchrony",
+        "pos": "n."
+    },
+    {
+        "chinese": "语言习得装置",
+        "english": "LAD (Language Acquisition Device)",
+        "pos": "n."
+    },
+    {
+        "chinese": "咿呀学语",
+        "english": "babbling",
+        "pos": "n."
+    },
+    {
+        "chinese": "母语法",
+        "english": "motherese",
+        "pos": "n."
+    },
+    {
+        "chinese": "大纲",
+        "english": "outline",
+        "pos": "n."
+    },
+    {
+        "chinese": "参考书目",
+        "english": "bibliography",
+        "pos": "n."
+    },
+    {
+        "chinese": "学术论文",
+        "english": "academic paper",
+        "pos": "n."
+    },
+    {
+        "chinese": "论证逻辑",
+        "english": "logical argument",
+        "pos": "n."
+    },
+    {
+        "chinese": "18世纪法国喜剧",
+        "english": "18th-century French comedy",
+        "pos": "n."
+    },
+    {
+        "chinese": "演绎推理",
+        "english": "deductive reasoning",
+        "pos": "n."
+    },
+    {
+        "chinese": "归纳推理",
+        "english": "inductive reasoning",
+        "pos": "n."
+    },
+    {
+        "chinese": "修辞手法",
+        "english": "rhetorical device",
+        "pos": "n."
+    },
+    {
+        "chinese": "文本分析",
+        "english": "textual analysis",
+        "pos": "n."
+    },
+    {
+        "chinese": "文献综述",
+        "english": "literature review",
+        "pos": "n."
+    },
+    {
+        "chinese": "理论框架",
+        "english": "theoretical framework",
+        "pos": "n."
+    },
+    {
+        "chinese": "方法论",
+        "english": "methodology",
+        "pos": "n."
+    },
+    {
+        "chinese": "学术诚信",
+        "english": "academic integrity",
+        "pos": "n."
+    },
+    {
+        "chinese": "同行评审",
+        "english": "peer review",
+        "pos": "n."
+    },
+    {
+        "chinese": "引用格式",
+        "english": "citation style",
+        "pos": "n."
     }
 ]
